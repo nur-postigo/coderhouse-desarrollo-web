@@ -1,0 +1,615 @@
+// ============================================
+// VARIABLES
+// ============================================
+
+// Colors
+$ink: #2b2b2b;
+$parchment: #f4f1ea;
+$accent-rose: #a64d5d;
+
+// dark theme
+$mourning-bg: #1a1a1a;
+$mourning-text: #cfcfcf;
+$mourning-border: #444;
+$mourning-header: #111111;
+$mourning-aside: #252525;
+$mourning-ornament: #666;
+
+// Typography
+$font-main: 'Cormorant Garamond', serif;
+
+// Font sizes
+$fs-h1: 4rem;
+$fs-h1-tablet: 2.5rem;
+$fs-h1-mobile: 2rem;
+
+$fs-h2: 2.5rem;
+$fs-h2-tablet: 1.8rem;
+
+$fs-h3: 1.8rem;
+$fs-body: 1.2rem;
+$fs-body-mobile: 1rem;
+$fs-blockquote: 1.5rem;
+$fs-blockquote-mobile: 1.1rem;
+$fs-series-title: 0.7rem;
+$fs-main-title: 1.4rem;
+
+// Spacing
+$spacing-sm: 10px;
+$spacing-md: 20px;
+$spacing-lg: 40px;
+$spacing-xl: 50px;
+
+// Breakpoints
+$bp-tablet: 768px;
+$bp-mobile: 480px;
+
+// Transitions
+$transition-fast: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Shadows
+$shadow-light: 0 5px 15px rgba(0, 0, 0, 0.05);
+$shadow-dark: 0 5px 20px rgba(0, 0, 0, 0.5);
+$shadow-inset: inset 0 0 10px #000;
+
+// Page tints
+$page-tints: (
+    'dictionary': #f4f0e8,
+    'shakespeare': #f0f4e8,
+    'hemline': #f4ece8,
+    'library': #e8f0f4,
+    'contact': #f4e8f0
+);
+
+@each $page, $tint in $page-tints {
+    .page-#{$page} {
+        background-color: $tint;
+    }
+}
+
+// ============================================
+// MIXINS
+// ============================================
+
+// Responsive breakpoint mixin
+@mixin respond-to($breakpoint) {
+    @if $breakpoint ==tablet {
+        @media (max-width: $bp-tablet) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==mobile {
+        @media (max-width: $bp-mobile) {
+            @content;
+        }
+    }
+}
+
+// Interactive link mixin
+// $underline: to show underline on hover
+@mixin interactive-link($color: $ink, $hover-color: $accent-rose, $underline: true) {
+    color: $color;
+    text-decoration: none;
+    transition: color $transition-fast;
+
+    @if $underline {
+        &:hover {
+            color: $hover-color;
+            border-bottom: 1px solid $hover-color;
+        }
+    }
+
+    @else {
+        &:hover {
+            color: $hover-color;
+        }
+    }
+}
+
+// Border accent mixin
+@mixin border-accent($side: left, $color: $accent-rose, $width: 3px) {
+    border-#{$side}: $width solid $color;
+}
+
+// Flex center mixin
+@mixin flex-center($direction: row, $gap: 0) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: $direction;
+
+    @if $gap >0 {
+        gap: $gap;
+    }
+}
+
+// Card hover lift effect
+@mixin hover-lift($amount: -4px, $shadow: true) {
+    transition: transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+        transform: translateY($amount);
+
+        @if $shadow {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+    }
+}
+
+// Fade in animation mixin
+@mixin fade-in($duration: 0.6s, $delay: 0s) {
+    animation: fadeIn $duration ease $delay both;
+}
+
+
+// ============================================
+// BASE: RESET & BODY
+// ============================================
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $parchment;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    background-attachment: fixed;
+    color: $ink;
+    font-family: $font-main;
+    line-height: 1.6;
+    margin: 0;
+    padding: clamp(20px, 5vw, 50px);
+
+    @include respond-to(tablet) {
+        padding: $spacing-sm;
+    }
+}
+
+
+// ============================================
+// BASE: TYPOGRAPHY
+// ============================================
+
+h1 {
+    font-size: $fs-h1;
+    text-align: center;
+    border-bottom: 1px solid $ink;
+    margin-bottom: $spacing-sm;
+    @include fade-in(0.7s);
+
+    @include respond-to(tablet) {
+        font-size: $fs-h1-tablet;
+    }
+
+    @include respond-to(mobile) {
+        font-size: $fs-h1-mobile;
+    }
+}
+
+h2 {
+    font-size: $fs-h2;
+    color: $accent-rose;
+
+    @include respond-to(tablet) {
+        font-size: $fs-h2-tablet;
+    }
+}
+
+h3 {
+    font-size: $fs-h3;
+}
+
+p {
+    font-size: $fs-body;
+    margin-bottom: $spacing-md;
+    text-align: justify;
+
+    @include respond-to(mobile) {
+        font-size: $fs-body-mobile;
+    }
+}
+
+blockquote {
+    clear: left;
+    font-style: italic;
+    @include border-accent(left, $accent-rose, 3px);
+    padding-left: $spacing-md;
+    margin: $spacing-lg 0;
+    font-size: $fs-blockquote;
+    transition: border-color $transition-fast, padding-left $transition-fast;
+
+    &:hover {
+        border-left-color: darken($accent-rose, 10%);
+        padding-left: $spacing-md + 6px;
+    }
+
+    @include respond-to(mobile) {
+        font-size: $fs-blockquote-mobile;
+    }
+}
+
+.subtitle {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: $spacing-xl;
+    @include fade-in(0.7s, 0.2s);
+}
+
+.garden-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+// ============================================
+// LAYOUT: HEADER
+// ============================================
+
+.book-header {
+    background-color: $parchment;
+    padding: 8px 0;
+    border-bottom: 3px double $ink;
+    box-shadow: $shadow-light;
+}
+
+.header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto auto 1fr;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+    column-gap: $spacing-md;
+
+    @include respond-to(tablet) {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        row-gap: $spacing-sm;
+    }
+}
+
+.title-group {
+    text-align: center;
+    grid-column: 3;
+
+    @include respond-to(tablet) {
+        grid-column: 1;
+    }
+}
+
+.nav-logo {
+    height: 70px;
+    width: auto;
+    align-self: center;
+    margin-right: $spacing-md;
+    grid-column: 2;
+    transition: transform $transition-fast, opacity $transition-fast;
+
+    &:hover {
+        transform: scale(1.05);
+        opacity: 0.85;
+    }
+
+    @include respond-to(tablet) {
+        grid-column: 1;
+        margin-right: 0;
+    }
+}
+
+.series-title {
+    font-size: $fs-series-title;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+    color: $accent-rose;
+    font-weight: bold;
+}
+
+.main-title {
+    font-size: $fs-main-title;
+    margin: 0;
+    font-family: $font-main;
+    font-weight: 700;
+}
+
+.ornament {
+    height: 0px;
+    background-color: $ink;
+    position: relative;
+
+    &::before {
+        content: "❦";
+        position: absolute;
+        top: -10px;
+        font-size: 1.2rem;
+    }
+
+    @include respond-to(tablet) {
+        display: none;
+    }
+}
+
+.header-inner .ornament:first-child {
+    grid-column: 1;
+}
+
+.header-inner .ornament:last-child {
+    grid-column: 4;
+}
+
+
+// ============================================
+// LAYOUT: FOOTER
+// ============================================
+
+.site-footer {
+    margin-top: $spacing-xl;
+    border-top: 2px double $ink;
+    padding-top: $spacing-lg;
+    font-size: 0.95rem;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+
+    @include respond-to(tablet) {
+        flex-direction: column;
+        gap: $spacing-md;
+    }
+}
+
+.footer-column {
+    flex: 1;
+
+    h3,
+    h4 {
+        color: $accent-rose;
+        margin-bottom: $spacing-sm;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        a {
+            @include interactive-link($ink, $accent-rose, true);
+            font-size: 0.9rem;
+        }
+    }
+}
+
+.footer-bottom {
+    margin-top: $spacing-lg;
+    border-top: 1px solid rgba($ink, 0.2);
+    padding-top: $spacing-sm;
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+
+// ============================================
+// COMPONENTS: NAVIGATION
+// ============================================
+
+.victorian-nav {
+    position: sticky;
+    top: 0;
+    background-color: $parchment;
+    z-index: 100;
+    border-bottom: 2px double $ink;
+    margin-bottom: $spacing-lg;
+
+    ul {
+        list-style: none;
+        @include flex-center(row, 30px);
+        padding: 0;
+        margin: 0;
+
+        @include respond-to(tablet) {
+            flex-direction: column;
+            gap: $spacing-sm;
+            padding: $spacing-sm 0;
+        }
+    }
+
+    a {
+        @include interactive-link($ink, $accent-rose, true);
+        font-variant: small-caps;
+        font-weight: bold;
+        letter-spacing: 1px;
+        padding: 4px 0;
+    }
+}
+
+
+// ============================================
+// COMPONENTS: CARDS
+// ============================================
+
+%card-text-base {
+    font-size: $fs-body;
+    line-height: 1.6;
+}
+
+%card-title-base {
+    font-family: $font-main;
+    color: $accent-rose;
+}
+
+.card {
+    border: 1px solid rgba($ink, 0.15);
+    @include hover-lift(-4px, true);
+
+    .card-title {
+        @extend %card-title-base;
+    }
+
+    .card-text {
+        @extend %card-text-base;
+    }
+
+    .card-img-top {
+        transition: transform 0.4s ease;
+    }
+
+    &:hover .card-img-top {
+        transform: scale(1.03);
+    }
+}
+
+.floral-shape {
+    float: left;
+    width: 200px;
+    height: 200px;
+    margin-right: 30px;
+    background-image: url("../img/flower1.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    shape-outside: circle(50%);
+    display: block;
+    shape-margin: 20px;
+
+    @include respond-to(tablet) {
+        float: none;
+        width: 100%;
+        height: 200px;
+        margin: 0 0 $spacing-md 0;
+    }
+}
+
+.floral-shape--two {
+    background-image: url("../img/whitepansy.png");
+    width: 350px;
+    height: 350px;
+}
+
+// ============================================
+// PAGES: MOURNING (dark theme)
+// ============================================
+
+%dark-heading {
+    color: #f4f1ea;
+    border-color: $mourning-border;
+}
+
+body.mourning-page {
+    background-color: $mourning-bg;
+    color: $mourning-text;
+    transition: background-color $transition-slow;
+
+    .victorian-nav {
+        background-color: $mourning-bg;
+        border-color: $mourning-border;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+
+        a {
+            @include interactive-link($mourning-text, $accent-rose, true);
+
+            &:hover {
+                filter: brightness(1.2);
+            }
+        }
+    }
+
+    h1,
+    h2,
+    h3 {
+        @extend %dark-heading;
+    }
+
+    a {
+        color: $accent-rose;
+        filter: brightness(1.2);
+        transition: filter $transition-fast;
+
+        &:hover {
+            filter: brightness(1.5);
+        }
+    }
+
+    aside {
+        background-color: $mourning-aside;
+        border: 1px solid $mourning-border;
+        padding: $spacing-md;
+        box-shadow: $shadow-inset;
+        transition: box-shadow $transition-fast;
+
+        &:hover {
+            box-shadow: $shadow-inset, 0 0 15px rgba($accent-rose, 0.1);
+        }
+    }
+
+    .book-header {
+        background-color: $mourning-header;
+        border-bottom: 3px double $mourning-border;
+        box-shadow: $shadow-dark;
+    }
+
+    .series-title {
+        color: #888;
+    }
+
+    .main-title {
+        color: #e0e0e0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        background: linear-gradient(to bottom, #cfcfcf 0%, #ffffff 50%, #999999 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .ornament {
+        background-color: $mourning-border;
+
+        &::before {
+            content: "☙";
+            color: $mourning-ornament;
+            top: -14px;
+        }
+    }
+
+    .site-footer {
+        border-top-color: $mourning-border;
+    }
+
+    .footer-column {
+
+        h3,
+        h4 {
+            color: lighten($accent-rose, 10%);
+        }
+
+        ul a {
+            @include interactive-link($mourning-text, $accent-rose, true);
+        }
+    }
+
+    .footer-bottom {
+        border-top-color: rgba(#fff, 0.1);
+        color: #666;
+    }
+}
