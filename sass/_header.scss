@@ -1,0 +1,92 @@
+@use 'variables' as *;
+
+.book-header {
+    background-color: $parchment;
+    padding: 8px 0;
+    border-bottom: 3px double $ink;
+    box-shadow: $shadow-light;
+}
+
+.header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto auto 1fr;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+    column-gap: $spacing-md;
+
+    @include respond-to(tablet) {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        row-gap: $spacing-sm;
+    }
+}
+
+.title-group {
+    text-align: center;
+    grid-column: 3;
+
+    @include respond-to(tablet) {
+        grid-column: 1;
+    }
+}
+
+.nav-logo {
+    height: 4.375rem;
+    width: auto;
+    align-self: center;
+    margin-right: $spacing-md;
+    grid-column: 2;
+    transition: transform $transition-fast, opacity $transition-fast;
+
+    &:hover {
+        transform: scale(1.05);
+        opacity: 0.85;
+    }
+
+    @include respond-to(tablet) {
+        grid-column: 1;
+        margin-right: 0;
+    }
+}
+
+.series-title {
+    font-size: $fs-series-title;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+    color: $accent-rose;
+    font-weight: bold;
+}
+
+.main-title {
+    font-size: $fs-main-title;
+    margin: 0;
+    font-family: $font-main;
+    font-weight: 700;
+}
+
+.ornament {
+    height: 0;
+    background-color: transparent;
+    position: relative;
+
+    &::before {
+        content: "❦";
+        position: absolute;
+        top: -10px;
+        font-size: 1.2rem;
+    }
+
+    @include respond-to(tablet) {
+        display: none;
+    }
+}
+
+.header-inner .ornament:first-child {
+    grid-column: 1;
+}
+
+.header-inner .ornament:last-child {
+    grid-column: 4;
+}
