@@ -1,0 +1,143 @@
+@use 'variables' as *;
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $parchment;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    background-attachment: fixed;
+    color: $ink;
+    font-family: $font-main;
+    line-height: 1.6;
+    margin: 0;
+    padding: clamp(20px, 5vw, 50px);
+
+    @include respond-to(tablet) {
+        padding: $spacing-sm;
+    }
+}
+
+h1 {
+    font-size: $fs-h1;
+    text-align: center;
+    border-bottom: 1px solid $ink;
+    margin-bottom: $spacing-sm;
+    @include fade-in(0.7s);
+
+    @include respond-to(tablet) {
+        font-size: $fs-h1-tablet;
+    }
+
+    @include respond-to(mobile) {
+        font-size: $fs-h1-mobile;
+    }
+}
+
+h2 {
+    font-size: $fs-h2;
+    color: $accent-rose;
+
+    @include respond-to(tablet) {
+        font-size: $fs-h2-tablet;
+    }
+}
+
+h3 {
+    font-size: $fs-h3;
+}
+
+p {
+    font-size: $fs-body;
+    margin-bottom: $spacing-md;
+    text-align: justify;
+
+    @include respond-to(mobile) {
+        font-size: $fs-body-mobile;
+    }
+}
+
+blockquote {
+    clear: left;
+    font-style: italic;
+    @include border-accent(left, $accent-rose, 3px);
+    padding-left: $spacing-md;
+    margin: $spacing-lg 0;
+    font-size: $fs-blockquote;
+    transition: border-color $transition-fast, padding-left $transition-fast;
+
+    &:hover {
+        border-left-color: darken($accent-rose, 10%);
+        padding-left: $spacing-md + 6px;
+    }
+
+    @include respond-to(mobile) {
+        font-size: $fs-blockquote-mobile;
+    }
+}
+
+.subtitle {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: $spacing-xl;
+    @include fade-in(0.7s, 0.2s);
+}
+
+.victorian-nav {
+    position: sticky;
+    top: 0;
+    background-color: $parchment;
+    z-index: 100;
+    border-bottom: 2px double $ink;
+    margin-bottom: $spacing-lg;
+
+    ul {
+        list-style: none;
+        @include flex-center(row, 30px);
+        padding: 0;
+        margin: 0;
+
+        @include respond-to(tablet) {
+            flex-direction: column;
+            gap: $spacing-sm;
+            padding: $spacing-sm 0;
+        }
+    }
+
+    a {
+        @include interactive-link($ink, $accent-rose, true);
+        font-variant: small-caps;
+        font-weight: bold;
+        letter-spacing: 1px;
+        padding: 4px 0;
+    }
+}
+
+$page-tints: (
+    'dictionary': #f4f0e8,
+    'shakespeare': #f0f4e8,
+    'hemline': #f4ece8,
+    'library': #e8f0f4,
+    'contact': #f4e8f0
+);
+
+@each $page, $tint in $page-tints {
+    .page-#{$page} {
+        background-color: $tint;
+    }
+}
