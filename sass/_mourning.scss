@@ -1,0 +1,104 @@
+@use 'variables' as *;
+
+%dark-heading {
+    color: #f4f1ea;
+    border-color: $mourning-border;
+}
+
+body.mourning-page {
+    background-color: $mourning-bg;
+    color: $mourning-text;
+    transition: background-color $transition-slow;
+
+    .victorian-nav {
+        background-color: $mourning-bg;
+        border-color: $mourning-border;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+
+        a {
+            @include interactive-link($mourning-text, $accent-rose, true);
+
+            &:hover {
+                filter: brightness(1.2);
+            }
+        }
+    }
+
+    h1,
+    h2,
+    h3 {
+        @extend %dark-heading;
+    }
+
+    a {
+        color: $accent-rose;
+        filter: brightness(1.2);
+        transition: filter $transition-fast;
+
+        &:hover {
+            filter: brightness(1.5);
+        }
+    }
+
+    aside {
+        background-color: $mourning-aside;
+        border: 1px solid $mourning-border;
+        padding: $spacing-md;
+        box-shadow: $shadow-inset;
+        transition: box-shadow $transition-fast;
+
+        &:hover {
+            box-shadow: $shadow-inset, 0 0 15px rgba($accent-rose, 0.1);
+        }
+    }
+
+    .book-header {
+        background-color: $mourning-header;
+        border-bottom: 3px double $mourning-border;
+        box-shadow: $shadow-dark;
+    }
+
+    .series-title {
+        color: #888;
+    }
+
+    .main-title {
+        color: #e0e0e0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        background: linear-gradient(to bottom, #cfcfcf 0%, #ffffff 50%, #999999 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .ornament {
+        background-color: $mourning-border;
+
+        &::before {
+            content: "☙";
+            color: $mourning-ornament;
+            top: -14px;
+        }
+    }
+
+    .site-footer {
+        border-top-color: $mourning-border;
+    }
+
+    .footer-column {
+
+        h3,
+        h4 {
+            color: lighten($accent-rose, 10%);
+        }
+
+        ul a {
+            @include interactive-link($mourning-text, $accent-rose, true);
+        }
+    }
+
+    .footer-bottom {
+        border-top-color: rgba(#fff, 0.1);
+        color: #666;
+    }
+}

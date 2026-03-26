@@ -1,0 +1,113 @@
+// Colors
+$ink: #2b2b2b;
+$parchment: #f4f1ea;
+$accent-rose: #a64d5d;
+
+// dark theme
+$mourning-bg: #1a1a1a;
+$mourning-text: #cfcfcf;
+$mourning-border: #444;
+$mourning-header: #111111;
+$mourning-aside: #252525;
+$mourning-ornament: #666;
+
+// Typography
+$font-main: 'Cormorant Garamond', serif;
+
+// Font sizes
+$fs-h1: 4rem;
+$fs-h1-tablet: 2.5rem;
+$fs-h1-mobile: 2rem;
+$fs-h2: 2.5rem;
+$fs-h2-tablet: 1.8rem;
+$fs-h3: 1.8rem;
+$fs-body: 1.2rem;
+$fs-body-mobile: 1rem;
+$fs-blockquote: 1.5rem;
+$fs-blockquote-mobile: 1.1rem;
+$fs-series-title: 0.7rem;
+$fs-main-title: 1.4rem;
+
+// Spacing
+$spacing-sm: 0.625rem;
+$spacing-md: 1.25rem;
+$spacing-lg: 2.5rem;
+$spacing-xl: 3.125rem;
+
+// Breakpoints
+$bp-tablet: 768px;
+$bp-mobile: 480px;
+
+// Transitions
+$transition-fast: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Shadows
+$shadow-light: 0 5px 15px rgba(0, 0, 0, 0.05);
+$shadow-dark: 0 5px 20px rgba(0, 0, 0, 0.5);
+$shadow-inset: inset 0 0 10px #000;
+
+// Mixins
+@mixin respond-to($breakpoint) {
+    @if $breakpoint ==tablet {
+        @media (max-width: $bp-tablet) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==mobile {
+        @media (max-width: $bp-mobile) {
+            @content;
+        }
+    }
+}
+
+@mixin interactive-link($color: $ink, $hover-color: $accent-rose, $underline: true) {
+    color: $color;
+    text-decoration: none;
+    transition: color $transition-fast;
+
+    @if $underline {
+        &:hover {
+            color: $hover-color;
+            border-bottom: 1px solid $hover-color;
+        }
+    }
+
+    @else {
+        &:hover {
+            color: $hover-color;
+        }
+    }
+}
+
+@mixin border-accent($side: left, $color: $accent-rose, $width: 3px) {
+    border-#{$side}: $width solid $color;
+}
+
+@mixin flex-center($direction: row, $gap: 0) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: $direction;
+
+    @if $gap >0 {
+        gap: $gap;
+    }
+}
+
+@mixin hover-lift($amount: -4px, $shadow: true) {
+    transition: transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+        transform: translateY($amount);
+
+        @if $shadow {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+    }
+}
+
+@mixin fade-in($duration: 0.6s, $delay: 0s) {
+    animation: fadeIn $duration ease $delay both;
+}
